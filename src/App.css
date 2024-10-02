@@ -1,0 +1,16 @@
+.heading {
+  margin: 0;
+  padding: 0px;
+  background-color: #5ee8b1;
+  color: white;
+  text-align: center;
+}
+
+.heading > h1 {
+  padding: 20px;
+  margin: 0;
+}
+#map{
+  width: 100%;
+  height: 100vh;
+}
