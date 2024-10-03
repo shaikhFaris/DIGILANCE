@@ -22,9 +22,12 @@ function Maps() {
   const [destMarker, setDestMarker] = useState({ lat: null, lng: null });
 
   useEffect(() => {
-    fetch("http://localhost:4331/api/navigation", {
-      method: "GET",
-    })
+    fetch(
+      "http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48446&destLat=12.9583&destLong=77.64887",
+      {
+        method: "GET",
+      }
+    )
       .then((response) => {
         return response.json();
       })
