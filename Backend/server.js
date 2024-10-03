@@ -9,6 +9,7 @@ app.use(cors())
 // format to write in browser http://localhost:4331/api/navigation
 
 app.get("/api/navigation",(req,res)=>{
+    // console.log(req.query);
     res.json(cordinates)
 })
 app.listen(PORT,()=>{
