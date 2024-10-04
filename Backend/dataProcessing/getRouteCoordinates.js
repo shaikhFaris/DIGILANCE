@@ -1,29 +1,39 @@
 import polyline from "@mapbox/polyline";
 
-const API_KEY="9sXz2CALz06ZFOenz2vXqZ9BWAn3JCZvUjqe09mN"
-const originLat="13.08374"
-const originLong="77.48446"
-const destLat="12.9237"
-const destLong="77.4987"
-
-const data=await fetch(`https://api.olamaps.io/routing/v1/directions?origin=${originLat},${originLong}&destination=${destLat},${destLong}&api_key=${API_KEY}`,{
-    method:"POST",
-    headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      }}
-)
-.then((response)=>{
-    // console.log(response)
-    return response.json();
-})
-.then((data)=>{
-    console.log(data)
-    return data;
-})
-
-const route_polyline=data.routes[0].overview_polyline;
-const cordinates=polyline.decode(route_polyline)
-// console.log(cordinates);
-
-export {cordinates};
-// coordinates is an 2d array of cordinates pon the road.
+class PolylineToCoordinates {
+  static fetchCoordinates = async (
+    API_KEY,
+    originLat,
+    originLong,
+    destLat,
+    destLong
+  ) => {
+    const data = await fetch(
+      `https://api.olamaps.io/routing/v1/directions?origin=${originLat},${originLong}&destination=${destLat},${destLong}&api_key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    )
+      .then((response) => {
+        // console.log(response)
+        return response.json();
+      })
+      .then((data) => {
+        // console.log(
+        //   "\x1b[34mPolylineToCoordinatesClass: fetched data successfully from ola maps api\x1b[0m"
+        // );
+        return data;
+      })
+      .catch((err) => {
+        console.error(
+          "\x1b[31mPolylineToCoordinatesClass: Error while fetching data from ola map api in static method of PolylineToCoordinates\x1b[0m\n" +
+            err
+        );
+      });
+    return polyline.decode(data.routes[0].overview_polyline);
+  };
+}
+export default PolylineToCoordinates;
