@@ -20,10 +20,13 @@ function Maps() {
   const [RenderMarker, setRenderMarker] = useState(false);
   const [latlngs, setLatlngs] = useState([]);
   const [destMarker, setDestMarker] = useState({ lat: null, lng: null });
+  const [destPlace, setDestPlace] = useState("");
+  const initLocationMarker = { lng: 77.48446, lat: 13.08374 };
+  const zoom = 15;
 
   useEffect(() => {
     fetch(
-      "http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48446&destLat=12.9583&destLong=77.64887",
+      "http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48446&destLat=13.03057&destLong=77.56489",
       {
         method: "GET",
       }
@@ -33,7 +36,9 @@ function Maps() {
       })
       .then((data) => {
         setLatlngs(data);
-        console.log(data[data.length - 1]);
+        console.log(
+          "coordinates (processed from polyline) recieved successfully"
+        );
         setDestMarker({
           lat: data[data.length - 1][0],
           lng: data[data.length - 1][1],
@@ -41,26 +46,37 @@ function Maps() {
         // console.log(destMarker);
         setRenderPolyline(true);
         setRenderMarker(true);
+      })
+      .catch((err) => {
+        console.error(
+          "error while fetching polyline coordniates of destination"
+        );
       });
   }, []);
 
-  const initLocationMarker = { lng: 77.48446, lat: 13.08374 };
-  const zoom = 15;
-
   return (
     <>
-      <MapContainer center={initLocationMarker} id="map" zoom={zoom}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <Marker position={initLocationMarker} />
-        {RenderPolyline && (
-          <Polyline positions={latlngs} color="red" weight={7} />
-        )}
-        {RenderMarker && <Marker position={destMarker} />}
-      </MapContainer>
-      {/* <button>Start</button> */}
+      <div className="relative w-full h-screen">
+        <MapContainer
+          center={initLocationMarker}
+          style={{ zIndex: 1 }}
+          id="map"
+          zoom={zoom}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={initLocationMarker} />
+          {RenderPolyline && (
+            <Polyline positions={latlngs} color="red" weight={7} />
+          )}
+          {RenderMarker && <Marker position={destMarker} />}
+        </MapContainer>
+        <button className="absolute w-1/12 bottom-5 font-bold  left-5 z-10 bg-blue-600 text-white p-2 rounded hover:bg-blue-800">
+          Start
+        </button>
+      </div>
     </>
   );
 }
