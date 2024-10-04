@@ -48,18 +48,20 @@ function Maps() {
   const zoom = 15;
 
   return (
-    <MapContainer center={initLocationMarker} id="map" zoom={zoom}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {/* Markers */}
-      <Marker position={initLocationMarker} />
-      {RenderPolyline && (
-        <Polyline positions={latlngs} color="red" weight={7} />
-      )}
-      {RenderMarker && <Marker position={destMarker} />}
-    </MapContainer>
+    <>
+      <MapContainer center={initLocationMarker} id="map" zoom={zoom}>
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={initLocationMarker} />
+        {RenderPolyline && (
+          <Polyline positions={latlngs} color="red" weight={7} />
+        )}
+        {RenderMarker && <Marker position={destMarker} />}
+      </MapContainer>
+      {/* <button>Start</button> */}
+    </>
   );
 }
 

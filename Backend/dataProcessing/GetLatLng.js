@@ -1,8 +1,8 @@
 class GetDestinationData {
-  static fetchDestinationData = async (input) => {
+  static fetchDestinationData = async (API_KEY, input) => {
     let DestinationData = [];
     await fetch(
-      `https://api.olamaps.io/places/v1/autocomplete?input=${input}&api_key=9sXz2CALz06ZFOenz2vXqZ9BWAn3JCZvUjqe09mN`,
+      `https://api.olamaps.io/places/v1/autocomplete?input=${input}&api_key=${API_KEY}`,
       {
         method: "GET",
       }
@@ -32,3 +32,4 @@ class GetDestinationData {
     return DestinationData;
   };
 }
+export default GetDestinationData;
