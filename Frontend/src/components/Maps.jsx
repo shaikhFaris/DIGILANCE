@@ -65,11 +65,11 @@ function Maps() {
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <Marker position={initLocationMarker} />
           {RenderPolyline && (
-            <Polyline positions={latlngs} color="red" weight={7} />
+            <Polyline positions={latlngs} color="#1565c0" weight={7} />
           )}
           {RenderMarker && <Marker position={destMarker} />}
         </MapContainer>
