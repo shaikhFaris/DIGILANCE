@@ -33,6 +33,7 @@ class PolylineToCoordinates {
             err
         );
       });
+
     return polyline.decode(data.routes[0].overview_polyline);
   };
 }

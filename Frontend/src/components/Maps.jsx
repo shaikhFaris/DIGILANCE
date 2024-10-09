@@ -5,6 +5,7 @@ import L from "leaflet";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+
 const DefaultIcon = L.icon({
   iconUrl,
   iconRetinaUrl,
@@ -20,7 +21,6 @@ function Maps() {
   const [RenderMarker, setRenderMarker] = useState(false);
   const [latlngs, setLatlngs] = useState([]);
   const [destMarker, setDestMarker] = useState({ lat: null, lng: null });
-  const [destPlace, setDestPlace] = useState("");
   const initLocationMarker = { lng: 77.48446, lat: 13.08374 };
   const zoom = 15;
 

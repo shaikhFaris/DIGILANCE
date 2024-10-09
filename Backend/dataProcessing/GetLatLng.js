@@ -12,6 +12,9 @@ class GetDestinationData {
       })
       .then((data) => {
         // console.log(data);
+        if (data.predictions.length == 0) {
+          return;
+        }
         for (let i = 0; i < data.predictions.length; i++) {
           const element = data.predictions[i];
           const temp = {
@@ -29,6 +32,7 @@ class GetDestinationData {
       .catch((err) => {
         console.error("error:" + err);
       });
+    // console.log(DestinationData);
     return DestinationData;
   };
 }

@@ -42,10 +42,17 @@ app.get("/api/getDestinationData", async (req, res) => {
     place
   )
     .then((data) => {
-      console.log(
-        "\x1b[34mSERVER: Destination Data sent successfully from server\x1b[0m"
-      );
-      res.json(data);
+      if (data.length == 0) {
+        console.log(
+          "\x1b[31mSERVER: NO MATCHES FOR THE GIVEN DESTINATIONS\x1b[0m"
+        );
+        res.json(null);
+      } else {
+        console.log(
+          "\x1b[34mSERVER: Destination Data sent successfully from server\x1b[0m"
+        );
+        res.json(data);
+      }
     })
     .catch((err) => {
       console.error(
