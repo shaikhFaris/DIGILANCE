@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { FaSearchLocation, FaRegWindowClose } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { setter } from "../redux/destLatLang/destLatLangSlice.js";
 // import "./App.css";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const destLatLang = useSelector((state) => state.destLatLang.value);
+
   const [Destplace, setDestplace] = useState("");
   const [DestData, setDestData] = useState([]);
   const [checkprint, setcheckprint] = useState(false);
@@ -12,12 +17,19 @@ export default function Navbar() {
     setToggleOptions(false);
   };
 
+  const handleSelectDestClick = (location) => {
+    console.log("clicked");
+    dispatch(setter(location));
+    // console.log(destLatLang);
+  };
+
   const handleSearchChange = (e) => {
     // console.log(e.target.value);
     setDestplace(e.target.value);
   };
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
+
     setToggleOptions(true);
     if (Destplace != "") {
       await fetch(
@@ -77,11 +89,15 @@ export default function Navbar() {
             />
             {checkprint ? (
               DestData.map((element, index) => {
-                console.log(element.name);
+                // console.log(element.name);
                 return (
                   <div
                     key={index}
-                    className="h-24 mt-3 p-1 pl-3 bg-green-200 rounded-xl overflow-hidden"
+                    className="h-24 mt-3 p-1 pl-3 bg-green-200 rounded-xl overflow-hidden focus:bg-green-900 hover:bg-green-400
+                     duration-300 hover:cursor-pointer hover:-translate-y-1 hover:scale-105"
+                    onClick={() => {
+                      handleSelectDestClick(element.location);
+                    }}
                   >
                     <h2 className="text-blue-800 font-medium">
                       {element.name}

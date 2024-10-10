@@ -5,6 +5,7 @@ import L from "leaflet";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { useSelector, useDispatch } from "react-redux";
 
 const DefaultIcon = L.icon({
   iconUrl,
@@ -17,6 +18,8 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 function Maps() {
+  const dispatch = useDispatch();
+  const destLatLang = useSelector((state) => state.destLatLang.value);
   const [RenderPolyline, setRenderPolyline] = useState(false);
   const [RenderMarker, setRenderMarker] = useState(false);
   const [latlngs, setLatlngs] = useState([]);
@@ -25,34 +28,38 @@ function Maps() {
   const zoom = 15;
 
   useEffect(() => {
-    fetch(
-      "http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48446&destLat=13.03057&destLong=77.56489",
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setLatlngs(data);
-        console.log(
-          "coordinates (processed from polyline) recieved successfully"
-        );
-        setDestMarker({
-          lat: data[data.length - 1][0],
-          lng: data[data.length - 1][1],
+    console.log(destLatLang);
+
+    if (destLatLang != null) {
+      fetch(
+        `http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48448&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
+        {
+          method: "GET",
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setLatlngs(data);
+          console.log(
+            "coordinates (processed from polyline) recieved successfully"
+          );
+          setDestMarker({
+            lat: data[data.length - 1][0],
+            lng: data[data.length - 1][1],
+          });
+          // console.log(destMarker);
+          setRenderPolyline(true);
+          setRenderMarker(true);
+        })
+        .catch((err) => {
+          console.error(
+            "error while fetching polyline coordniates of destination"
+          );
         });
-        // console.log(destMarker);
-        setRenderPolyline(true);
-        setRenderMarker(true);
-      })
-      .catch((err) => {
-        console.error(
-          "error while fetching polyline coordniates of destination"
-        );
-      });
-  }, []);
+    }
+  }, [destLatLang]);
 
   return (
     <>

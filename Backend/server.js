@@ -23,6 +23,8 @@ app.get("/api/navigation", async (req, res) => {
       console.log(
         "\x1b[34mSERVER: Navigation Data sent to client successfully from server\x1b[0m"
       );
+      // console.log(processed_data);
+
       res.json(processed_data);
     })
     .catch((err) => {
