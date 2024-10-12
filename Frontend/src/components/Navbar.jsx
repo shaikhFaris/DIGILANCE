@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearchLocation, FaRegWindowClose } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { setter } from "../redux/destLatLang/destLatLangSlice.js";
@@ -18,7 +18,8 @@ export default function Navbar() {
   };
 
   const handleSelectDestClick = (location) => {
-    console.log("clicked");
+    setToggleOptions(false);
+    // console.log("clicked");
     dispatch(setter(location));
     // console.log(destLatLang);
   };
@@ -58,7 +59,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="absolute top-0 z-10 w-full h-[85px] flex-col  flex items-center justify-center border border-black">
+      <div className="absolute top-0 z-10 w-full h-[85px] flex-col  flex items-center justify-center ">
         {/* <h1 className="text-white font-medium text-2xl">DIGILANCE</h1> */}
         <form
           className="w-4/12 h-10 bg-white rounded-full flex p-1 items-center justify-around"

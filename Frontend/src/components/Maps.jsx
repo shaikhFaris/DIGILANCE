@@ -24,15 +24,30 @@ function Maps() {
   const [RenderMarker, setRenderMarker] = useState(false);
   const [latlngs, setLatlngs] = useState([]);
   const [destMarker, setDestMarker] = useState({ lat: null, lng: null });
-  const initLocationMarker = { lng: 77.48446, lat: 13.08374 };
-  const zoom = 15;
+  const [renderMap, setrenderMap] = useState(false);
+  const [userLocation, setuserLocation] = useState({
+    lat: null,
+    lng: null,
+  });
+  const zoom = 14;
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+      setuserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+      setrenderMap(true);
+    });
+  }, []);
 
   useEffect(() => {
     console.log(destLatLang);
 
     if (destLatLang != null) {
       fetch(
-        `http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48448&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
+        `http://localhost:4331/api/navigation?originLat=${userLocation.lat}&originLong=${userLocation.lng}&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
         {
           method: "GET",
         }
@@ -63,27 +78,36 @@ function Maps() {
 
   return (
     <>
-      <div className="relative w-full h-screen">
-        <MapContainer
-          center={initLocationMarker}
-          style={{ zIndex: 1 }}
-          id="map"
-          zoom={zoom}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <Marker position={initLocationMarker} />
-          {RenderPolyline && (
-            <Polyline positions={latlngs} color="#1565c0" weight={7} />
-          )}
-          {RenderMarker && <Marker position={destMarker} />}
-        </MapContainer>
-        <button className="absolute w-1/12 bottom-5 font-bold  left-5 z-10 bg-blue-600 text-white p-2 rounded hover:bg-blue-800">
-          Start
-        </button>
-      </div>
+      {renderMap ? (
+        <div className="relative w-full h-screen">
+          <MapContainer
+            center={userLocation}
+            style={{ zIndex: 1 }}
+            id="map"
+            zoom={zoom}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={userLocation} />
+            {RenderPolyline && (
+              <Polyline positions={latlngs} color="#1565c0" weight={7} />
+            )}
+            {RenderMarker && <Marker position={destMarker} />}
+          </MapContainer>
+          <button className="absolute w-1/12 bottom-5 font-bold  left-5 z-10 bg-blue-600 text-white p-2 rounded hover:bg-blue-800">
+            Start
+          </button>
+        </div>
+      ) : (
+        <div className=" flex justify-center items-center w-full h-screen">
+          <div className=" font-bold text-5xl text-center leading-relaxed">
+            Please give us access to your location <br />
+            We wont sell you out !!
+          </div>
+        </div>
+      )}
     </>
   );
 }
