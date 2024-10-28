@@ -1,5 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import { MapContainer, TileLayer, Polyline, Marker } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Polyline,
+  Marker,
+  CircleMarker,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
@@ -32,14 +38,20 @@ function Maps() {
   const zoom = 14;
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
-      setuserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-      setrenderMap(true);
-    });
+    navigator.geolocation.watchPosition(
+      (position) => {
+        console.log(position);
+        setuserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setrenderMap(true);
+      },
+      (error) => {
+        console.error("Error while finding the current location");
+        console.error(error);
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -47,7 +59,7 @@ function Maps() {
 
     if (destLatLang != null) {
       fetch(
-        `http://localhost:4331/api/navigation?originLat=${userLocation.lat}&originLong=${userLocation.lng}&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
+        `http://172.29.112.1:4331/api/navigation?originLat=${userLocation.lat}&originLong=${userLocation.lng}&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
         {
           method: "GET",
         }
@@ -90,7 +102,16 @@ function Maps() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <Marker position={userLocation} />
+            {/* <Marker position={userLocation} /> */}
+            <CircleMarker
+              center={userLocation}
+              pathOptions={{
+                fillColor: "#00b4d8",
+                color: "#023e8a",
+                fillOpacity: 0.5,
+              }}
+              radius={15}
+            />
             {RenderPolyline && (
               <Polyline positions={latlngs} color="#1565c0" weight={7} />
             )}
