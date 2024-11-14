@@ -29,12 +29,12 @@ We welcome contributions from the community! If you'd like to contribute, follow
      ```bash
      # For the backend
      cd ./backend
+     npm install nodemon
      npm install
 
      # For the frontend
      cd ./frontend
      npm install
-     npm install nodemon
      ```
 
 5. **Create a New Branch**
