@@ -59,7 +59,7 @@ function Maps() {
 
     if (destLatLang != null) {
       fetch(
-        `http://172.29.112.1:4331/api/navigation?originLat=${userLocation.lat}&originLong=${userLocation.lng}&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
+        `http://localhost:4331/api/navigation?originLat=${userLocation.lat}&originLong=${userLocation.lng}&destLat=${destLatLang.lat}&destLong=${destLatLang.lng}`,
         {
           method: "GET",
         }

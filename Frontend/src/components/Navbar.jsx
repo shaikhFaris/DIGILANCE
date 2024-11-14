@@ -34,7 +34,7 @@ export default function Navbar() {
     setToggleOptions(true);
     if (Destplace != "") {
       await fetch(
-        `http://172.29.112.1:4331/api/getDestinationData?place=${Destplace}`,
+        `http://localhost:4331/api/getDestinationData?place=${Destplace}`,
         {
           method: "GET",
         }
