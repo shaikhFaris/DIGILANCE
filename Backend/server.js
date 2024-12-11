@@ -2,18 +2,19 @@ import express from "express";
 import PolylineToCoordinates from "./dataProcessing/getRouteCoordinates.js";
 import GetDestinationData from "./dataProcessing/GetLatLng.js";
 import cors from "cors";
+import dotenv from "dotenv";
 const app = express();
 const PORT = 4331;
 
+dotenv.config();
 app.use(cors());
 // format to write in browser
 //http://localhost:4331/api/navigation?originLat=13.08374&originLong=77.48446&destLat=12.9237&destLong=77.4987
 
 app.get("/api/navigation", async (req, res) => {
-  console.log(req.query);
   const { originLat, originLong, destLat, destLong } = req.query;
   await PolylineToCoordinates.fetchCoordinates(
-    "9sXz2CALz06ZFOenz2vXqZ9BWAn3JCZvUjqe09mN",
+    process.env.API_KEY,
     originLat,
     originLong,
     destLat,
